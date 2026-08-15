@@ -209,4 +209,119 @@ export const ui = {
     ru: "Здравствуйте, хочу запросить изменения на сайте Yummy.",
     tr: "Merhaba, Yummy sitesinde değişiklik talep etmek istiyorum.",
   } as LocalizedText,
+
+  // Navigasyon
+  navHome: {
+    en: "Home",
+    id: "Beranda",
+    ru: "Главная",
+    tr: "Ana Sayfa",
+  } as LocalizedText,
+
+  navContact: {
+    en: "Contact",
+    id: "Kontak",
+    ru: "Контакты",
+    tr: "İletişim",
+  } as LocalizedText,
+
+  navCareers: {
+    en: "Careers",
+    id: "Karier",
+    ru: "Вакансии",
+    tr: "Kariyer",
+  } as LocalizedText,
+
+  // Contact sayfası
+  getDirections: {
+    en: "Get Directions",
+    id: "Petunjuk Arah",
+    ru: "Маршрут",
+    tr: "Yol Tarifi",
+  } as LocalizedText,
+
+  contactEyebrow: {
+    en: "Contact",
+    id: "Kontak",
+    ru: "Контакты",
+    tr: "İletişim",
+  } as LocalizedText,
+
+  contactPageHeading: {
+    en: "Come say hi",
+    id: "Mampir dan sapa kami",
+    ru: "Заходите в гости",
+    tr: "Uğrayın, tanışalım",
+  } as LocalizedText,
+
+  contactSub: {
+    en: "Find us in Pererenan, Bali — right by the action.",
+    id: "Temukan kami di Pererenan, Bali — dekat dengan keramaian.",
+    ru: "Найдите нас в Переренане, Бали — в самом центре.",
+    tr: "Bizi Pererenan, Bali'de bulun — tam kalbinde.",
+  } as LocalizedText,
+
+  // Careers sayfası
+  careersEyebrow: {
+    en: "Join the team",
+    id: "Bergabunglah dengan tim",
+    ru: "Присоединяйтесь к команде",
+    tr: "Ekibe katıl",
+  } as LocalizedText,
+
+  careersHeading: {
+    en: "We're hiring",
+    id: "Kami sedang merekrut",
+    ru: "Мы нанимаем",
+    tr: "İşe alım yapıyoruz",
+  } as LocalizedText,
+
+  careersSub: {
+    en: "Love sweets and people? Come sell waffles with a smile.",
+    id: "Suka manisan dan bertemu orang? Mari jual waffle sambil tersenyum.",
+    ru: "Любите сладкое и людей? Приходите продавать вафли с улыбкой.",
+    tr: "Tatlıyı ve insanları seviyor musun? Gel, güler yüzle waffle sat.",
+  } as LocalizedText,
+
+  jobResponsibilitiesHeading: {
+    en: "What you'll do",
+    id: "Tugas Anda",
+    ru: "Ваши задачи",
+    tr: "Neler yapacaksın",
+  } as LocalizedText,
+
+  jobQualificationsHeading: {
+    en: "Who we're looking for",
+    id: "Kriteria yang kami cari",
+    ru: "Кого мы ищем",
+    tr: "Kimi arıyoruz",
+  } as LocalizedText,
+
+  jobSalaryHeading: {
+    en: "Pay",
+    id: "Gaji",
+    ru: "Оплата",
+    tr: "Maaş",
+  } as LocalizedText,
+
+  jobHoursHeading: {
+    en: "Working hours",
+    id: "Jam kerja",
+    ru: "График",
+    tr: "Çalışma saatleri",
+  } as LocalizedText,
+
+  applyOnWhatsApp: {
+    en: "Apply on WhatsApp",
+    id: "Lamar via WhatsApp",
+    ru: "Откликнуться в WhatsApp",
+    tr: "WhatsApp'tan Başvur",
+  } as LocalizedText,
+
+  jobApplicationMessage: {
+    en: "Hi, I'd like to apply for the waffle sales & service position at Yummy.",
+    id: "Halo, saya ingin melamar posisi penjualan & pelayanan waffle di Yummy.",
+    ru: "Здравствуйте, хочу откликнуться на вакансию продавца вафель и обслуживания в Yummy.",
+    tr: "Merhaba, Yummy'deki waffle satış & servis pozisyonu için başvurmak istiyorum.",
+  } as LocalizedText,
 };

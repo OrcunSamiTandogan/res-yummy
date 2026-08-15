@@ -3,6 +3,8 @@ import { Fredoka, Inter } from "next/font/google";
 import "./globals.css";
 import { restaurantName, brandTagline } from "@/data/restaurant";
 import { LanguageProvider } from "@/components/LanguageContext";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,7 +25,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${inter.variable} ${display.variable}`}>
       <body className="flex min-h-screen flex-col bg-cream font-sans text-slate-900">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </LanguageProvider>
       </body>
     </html>
   );
