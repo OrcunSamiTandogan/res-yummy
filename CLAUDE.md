@@ -41,23 +41,48 @@ Fontlar (`app/layout.tsx`): Fredoka (display) + Inter (body).
 res-yummy/
 ├── CLAUDE.md
 ├── README.md
+├── .env.example               # panel ortam değişkenleri
 ├── app/
-│   ├── layout.tsx             # LanguageProvider + fontlar + metadata
-│   ├── page.tsx               # ANA SAYFA ("use client") — tüm bölümler
-│   └── globals.css            # tailwind + focus-visible + reduced-motion
+│   ├── layout.tsx             # kök: fontlar + metadata (site kabuğu DEĞİL)
+│   ├── robots.ts              # /admin ve /api disallow
+│   ├── (site)/
+│   │   ├── layout.tsx         # LanguageProvider + SiteHeader + SiteFooter
+│   │   ├── page.tsx           # ANA SAYFA ("use client") — tüm bölümler
+│   │   ├── contact/page.tsx
+│   │   └── careers/page.tsx
+│   ├── admin/
+│   │   ├── layout.tsx         # panel kabuğu (noindex)
+│   │   └── page.tsx           # <AdminApp />
+│   └── api/admin/
+│       ├── session/route.ts   # GET: yapılandırma + oturum durumu
+│       ├── login/route.ts     # POST: şifre → imzalı cookie
+│       ├── logout/route.ts    # POST: cookie sil
+│       ├── menu/route.ts      # GET: repodaki menu.json · PUT: doğrula + commit
+│       └── upload/route.ts    # POST: görsel → public/menu/*.webp commit
 ├── components/
 │   ├── LanguageContext.tsx    # aktif dil state (React Context, 4 dil)
 │   ├── LanguageSelector.tsx   # EN/ID/RU/TR bayraklı seçici
 │   ├── WhatsAppButton.tsx     # wa.me link üretici (merkezi)
 │   ├── MenuItemCard.tsx       # kart (foto + fiyat rozeti + swatch + addOn + adet)
 │   ├── ItemOrder.tsx          # adet stepper + "WhatsApp'tan sipariş"
-│   └── ReservationForm.tsx    # tarih + saat pill + kişi → rezervasyon mesajı
+│   ├── ReservationForm.tsx    # tarih + saat pill + kişi → rezervasyon mesajı
+│   └── admin/
+│       ├── AdminApp.tsx       # oturum kontrolü + giriş ekranı
+│       ├── MenuEditor.tsx     # kategori/kalem CRUD + yayınla
+│       └── ImageUploader.tsx  # tarayıcıda webp + yükleme
+├── lib/
+│   ├── auth.ts                # HMAC cookie oturum + sabit süreli şifre kontrolü
+│   ├── github.ts              # Contents API (oku/yaz)
+│   ├── menu-validate.ts       # sunucu tarafı menü doğrulaması
+│   ├── origin-guard.ts        # CSRF (aynı origin) kontrolü
+│   └── admin-client.ts        # panel istemci yardımcıları
 ├── data/
-│   ├── i18n.ts                # Locale tipi ("en"|"id"|"ru"|"tr"), DEFAULT, LOCALES, pick()
+│   ├── i18n.ts                # Locale tipi, LOCALES, pick()
 │   ├── ui.ts                  # UI etiketleri + mesaj şablonları (4 dil)
 │   ├── restaurant.ts          # ad, slogan, WhatsApp, adres, saatler (localized)
-│   └── menu.ts                # 4 kategori × kalemler (localized + IDR fiyat + foto + swatch)
-└── public/menu/menu-1..2.jpg  # müşteri menü fotoğrafları
+│   ├── menu.json              # MENÜ VERİSİ (tek kaynak; panel bunu düzenler)
+│   └── menu.ts                # menü tipleri + json yükleyici
+└── public/menu/               # menü görselleri (menu-1..2.jpg + panelden yüklenenler)
 ```
 
 ---
@@ -73,7 +98,7 @@ res-yummy/
 
 ---
 
-## 5. Sayfa Akışı (app/page.tsx)
+## 5. Sayfa Akışı (`app/(site)/page.tsx`)
 
 1. **Sticky header** — scroll'da görünür; logo "Y", Menü/Rezervasyon linki, dil seçici.
 2. **Hero** — radial dot desenli cream zemin, "WAFFLE & GELATO" rozeti, büyük "Yummy" başlığı,
@@ -122,3 +147,51 @@ npm run build        # tip + üretim build
 npm audit            # 0 vulnerability hedefi
 git push origin master
 ```
+
+Yerel panel testi (duman testi):
+
+```bash
+ADMIN_PASSWORD=test123 \
+ADMIN_SESSION_SECRET=0123456789abcdef0123456789abcdef \
+GITHUB_TOKEN=<pat> \
+npx next start -p 3100
+# /admin → giriş → menü düzenle → Yayınla
+```
+
+---
+
+## 9. Yönetim Paneli (`/admin`) — Vercel-only mimari
+
+**Karar (2026-10-16):** Telegram bot YOK, VPS YOK. Menü yönetimi tamamen Vercel içinde.
+
+### Neden Git'e yazıyor?
+
+Vercel dosya sistemi salt-okunur; çalışma anında `data/menu.json` yazılamaz. Bu yüzden yazma işi
+GitHub Contents API ile **commit** olarak yapılır; Vercel commit'i görüp otomatik rebuild alır (~40 sn).
+Böylece veritabanı, sunucu ve ek maliyet gerekmez; her değişiklik git geçmişinde kalır (**git = veritabanı**).
+
+### Akış
+
+```
+/admin (tarayıcı)  →  PUT /api/admin/menu  →  lib/menu-validate.ts (doğrula)
+                   →  lib/github.ts (commit data/menu.json)  →  Vercel rebuild  →  canlı site
+```
+
+Görsel yolu: tarayıcıda canvas ile **1600px webp**'e küçültülür → `POST /api/admin/upload`
+→ `public/menu/<slug>.webp` commit. (Sunucuda sharp/Pillow yok — bu yüzden dönüşüm istemcide.)
+
+### Güvenlik
+
+- Oturum: `ADMIN_PASSWORD` (sabit süreli karşılaştırma) + `ADMIN_SESSION_SECRET` ile **HMAC-SHA256** imzalı
+  `httpOnly` cookie (7 gün, `sameSite=lax`, üretimde `secure`). Kütüphane yok — `node:crypto`.
+- State değiştiren tüm isteklerde `lib/origin-guard.ts` ile **aynı origin** kontrolü (CSRF).
+- `GITHUB_TOKEN` yalnızca sunucuda okunur; yalnızca `res-yummy` + `Contents: Read and write` yetkisi yeterli.
+- `/admin` ve `/api/` → `app/robots.ts` disallow + panel `noindex`.
+- Yükleme: gerçek tür ilk baytlardan doğrulanır (webp/png/jpg), max 3 MB, dosya adı slug'lanır.
+
+### Sınırlar (bilinçli)
+
+- Yayınla → site ~40 sn sonra güncellenir (rebuild beklemesi). Anlık güncelleme istenirse
+  ileride Vercel KV/Blob + ISR ya da eren kalıbı (FastAPI + Mongo) gerekir.
+- İçerik dört dilde tutulur; kaydetmeden önce dört dilin de dolu olması gerekir (doğrulama hata verir).
+- Tek şifre var; çok kullanıcı/rol yok (gerekirse GitHub OAuth eklenebilir).

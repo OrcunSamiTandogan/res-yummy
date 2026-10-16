@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Fredoka, Inter } from "next/font/google";
 import "./globals.css";
 import { restaurantName, brandTagline } from "@/data/restaurant";
-import { LanguageProvider } from "@/components/LanguageContext";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,16 +18,12 @@ export const metadata: Metadata = {
   description: "Crispy waffles and silky gelato. Easy WhatsApp ordering and table reservations.",
 };
 
+// Kök layout: yalnızca fontlar + html/body.
+// Site kabuğu (header/footer) app/(site)/layout.tsx, panel kabuğu app/admin/layout.tsx içinde.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${display.variable}`}>
-      <body className="flex min-h-screen flex-col bg-cream font-sans text-slate-900">
-        <LanguageProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </LanguageProvider>
-      </body>
+      <body className="font-sans text-slate-900 antialiased">{children}</body>
     </html>
   );
 }
