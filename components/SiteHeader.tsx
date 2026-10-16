@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { LanguageSelector } from "./LanguageSelector";
 import { useLanguage } from "./LanguageContext";
 import { pick } from "@/data/i18n";
@@ -37,9 +38,14 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-700 font-display text-lg font-bold text-white shadow-sm">
-            Y
-          </span>
+          <Image
+            src="/brand/logo.webp"
+            alt=""
+            width={256}
+            height={256}
+            priority
+            className="h-10 w-10 rounded-full object-cover shadow-sm ring-1 ring-brand-100"
+          />
           <span className="font-display text-lg font-semibold text-slate-900">
             {pick(restaurantName, locale)}
           </span>

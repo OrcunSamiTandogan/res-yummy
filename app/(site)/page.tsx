@@ -113,15 +113,15 @@ export default function HomePage() {
           </div>
 
           {/* Hero görseli */}
-          <div data-reveal className="mx-auto mt-12 max-w-2xl">
+          <div data-reveal className="mx-auto mt-12 max-w-3xl">
             <div className="relative overflow-hidden rounded-3xl shadow-lift ring-1 ring-brand-100">
               <Image
-                src="/menu/menu-1.jpg"
+                src="/brand/hero.jpg"
                 alt={pick(brandTagline, locale)}
-                width={1200}
-                height={1600}
+                width={1254}
+                height={628}
                 priority
-                className="h-64 w-full object-cover object-top sm:h-80"
+                className="h-auto w-full object-cover"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-espresso/70 to-transparent p-4 text-left">
                 <p className="font-display text-lg font-semibold text-white">
