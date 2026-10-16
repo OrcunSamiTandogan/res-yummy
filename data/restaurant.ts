@@ -1,7 +1,7 @@
 import type { LocalizedText } from "./i18n";
 
 // Yummy — WAFFLE & GELATO tatlı dükkanı genel bilgileri.
-// İletişim numarası şimdilik placeholder; müşteri verisi gelince tek yerden güncellenir.
+// İletişim tek yerden: whatsappNumber (tüm wa.me butonları) + phone (görünen numara).
 
 export const restaurantName: LocalizedText = {
   en: "Yummy",
@@ -24,8 +24,11 @@ export const slogan: LocalizedText = {
   tr: "Çıtır waffle'lar, ipeksi gelato — her lokmada kusursuz bir uyum.",
 };
 
-// Uluslararası format, + / boşluk / tire yok. (Şu an placeholder.)
-export const whatsappNumber = "62000000000";
+// Uluslararası format, + / boşluk / tire yok (wa.me bu formatı ister).
+export const whatsappNumber = "905367841917";
+
+// Ekranda gösterilen numara (uluslararası okunabilir format).
+export const phone = "+90 536 784 19 17";
 
 // Gerçek mekân adresi (Google Maps linkinden çözümlendi).
 export const address: LocalizedText = {
@@ -34,8 +37,6 @@ export const address: LocalizedText = {
   ru: "Джл. Мундук Кедунгу, Переренан, Кута Утара, Бадунг, Бали",
   tr: "Jl. Munduk Kedungu, Pererenan, Kuta Utara, Badung, Bali",
 };
-
-export const phone = "+62 8xx xxx xx xx";
 
 // Google Maps: yol tarifi + gömülü harita (koordinat -8.6541, 115.1244).
 export const mapsUrl = "https://maps.app.goo.gl/D2xfTfwx89yTRx4C6";

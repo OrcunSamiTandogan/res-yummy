@@ -92,12 +92,15 @@ Scroll-spy + reveal animasyonu `IntersectionObserver` ile (page.tsx Step 1.0 / 1
 
 | Alan | Konum | Durum |
 |------|-------|-------|
-| WhatsApp numarası | `data/restaurant.ts` → `whatsappNumber` | `62000000000` placeholder |
-| Adres / telefon | `data/restaurant.ts` | örnek Canggu, Bali (placeholder) |
+| WhatsApp numarası | `data/restaurant.ts` → `whatsappNumber` | ✅ gerçek: `905367841917` (+90 536 784 19 17) |
+| Adres | `data/restaurant.ts` → `address` | ✅ gerçek: Pererenan, Kuta Utara, Badung, Bali |
+| Telefon | `data/restaurant.ts` → `phone` | ✅ gerçek: `+90 536 784 19 17` |
 | Gelato boyut "Large" fiyatı | `data/menu.ts` → `cup-large` | `85000` placeholder |
 | Bubble Cup / Fruit Cup fiyatları | `data/menu.ts` | `30000` / `35000` placeholder |
 
 Placeholder'lar `// placeholder` yorumuyla işaretli; müşteri verisi gelince tek yerden güncellenir.
+Numara değişikliği: `data/restaurant.ts` içindeki `whatsappNumber` (wa.me, + ve boşluk olmadan)
+ile `phone` (ekranda görünen format) birlikte güncellenir.
 
 ---
 
