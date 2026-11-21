@@ -8,7 +8,7 @@ import { LanguageSelector } from "./LanguageSelector";
 import { useLanguage } from "./LanguageContext";
 import { pick } from "@/data/i18n";
 import { ui } from "@/data/ui";
-import { restaurantName } from "@/data/restaurant";
+import { useRestaurant } from "@/components/RestaurantContext";
 
 const NAV_LINKS = [
   { href: "/", key: "navHome" as const },
@@ -19,6 +19,7 @@ const NAV_LINKS = [
 
 export function SiteHeader() {
   const { locale } = useLanguage();
+  const { restaurantName } = useRestaurant();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 

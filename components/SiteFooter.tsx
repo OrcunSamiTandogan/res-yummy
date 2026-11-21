@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useLanguage } from "./LanguageContext";
 import { pick } from "@/data/i18n";
 import { ui } from "@/data/ui";
-import { restaurantName, brandTagline, address } from "@/data/restaurant";
+import { useRestaurant } from "@/components/RestaurantContext";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function SiteFooter() {
   const { locale } = useLanguage();
+  const { restaurantName, brandTagline, address } = useRestaurant();
 
   return (
     <>

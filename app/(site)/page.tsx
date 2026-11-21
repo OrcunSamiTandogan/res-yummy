@@ -4,16 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { MapPin, Phone, Clock, CalendarCheck, UtensilsCrossed } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { menuCategories } from "@/data/menu";
-import {
-  restaurantName,
-  brandTagline,
-  slogan,
-  address,
-  phone,
-  workingHours,
-  mapsUrl,
-} from "@/data/restaurant";
+import { menuCategories as staticMenu, type MenuCategory } from "@/data/menu";
+import { useRestaurant } from "@/components/RestaurantContext";
+import { cmsEnabled, publicCmsRequest } from "@/lib/yummy-api";
 import { MenuItemCard } from "@/components/MenuItemCard";
 import { ReservationForm } from "@/components/ReservationForm";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -23,7 +16,18 @@ import { ui } from "@/data/ui";
 
 export default function HomePage() {
   const { locale } = useLanguage();
-  const [activeCategory, setActiveCategory] = useState(menuCategories[0]?.id ?? "");
+  const { restaurantName, brandTagline, slogan, address, phone, workingHours, mapsUrl } = useRestaurant();
+  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>(staticMenu);
+  const [menuUnavailable, setMenuUnavailable] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(staticMenu[0]?.id ?? "");
+  useEffect(() => {
+    if (!cmsEnabled) return;
+    let active = true;
+    void publicCmsRequest<MenuCategory[]>("/menu")
+      .then((data) => { if (active) { setMenuCategories(data); setActiveCategory(data[0]?.id ?? ""); setMenuUnavailable(false); } })
+      .catch(() => { if (active) { setMenuCategories([]); setMenuUnavailable(true); } });
+    return () => { active = false; };
+  }, []);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   // Step 1.0: Kategori scroll-spy + reveal animasyonu.
@@ -62,7 +66,7 @@ export default function HomePage() {
       spy.disconnect();
       reveal.disconnect();
     };
-  }, []);
+  }, [menuCategories]);
 
   return (
     <div>
@@ -144,6 +148,8 @@ export default function HomePage() {
               {pick(ui.menuHeading, locale)}
             </h2>
           </div>
+
+          {menuUnavailable && <p role="status" className="mb-8 text-center text-rose-700">Menu is temporarily unavailable.</p>}
 
           {/* Kategori navigasyonu */}
           <div className="sticky top-[57px] z-30 -mx-4 mb-10 border-b border-slate-200 bg-white/95 px-4 py-3 shadow-sm backdrop-blur sm:-mx-6 sm:px-6">
