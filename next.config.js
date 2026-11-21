@@ -19,6 +19,11 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  // Serve CMS-managed WebP media from the FastAPI origin without exposing private API routes.
+  async rewrites() {
+    const origin = process.env.YUMMY_API_ORIGIN?.replace(/\/$/, "");
+    return origin ? [{ source: "/media/:path*", destination: origin + "/media/:path*" }] : [];
+  },
   async headers() {
     return [
       {

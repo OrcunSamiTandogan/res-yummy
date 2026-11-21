@@ -36,6 +36,7 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
             />
             <Image
               src={hero}
+              unoptimized={hero.startsWith("/media/")}
               alt={name}
               fill
               onLoad={() => setLoaded(true)}
