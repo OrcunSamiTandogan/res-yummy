@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import sys
+from datetime import timedelta
 from pathlib import Path
 
 from pymongo import AsyncMongoClient
@@ -11,6 +12,7 @@ from pymongo.errors import DuplicateKeyError
 
 from app.config import get_settings
 from app.database import ensure_indexes
+from app.media import cleanup_orphan_media
 from app.security import hash_password, utc_now
 from app.schema import MenuWrite, SiteWrite
 
@@ -71,11 +73,23 @@ async def seed_content() -> int:
         await client.close()
 
 
+async def prune_orphans() -> int:
+    client, db, settings = await open_database()
+    try:
+        cutoff = utc_now() - timedelta(hours=settings.orphan_grace_hours)
+        files, _ = await cleanup_orphan_media(db, settings, cutoff)
+        print(f"Pruned {files} unreferenced uploaded image(s)")
+        return 0
+    finally:
+        await client.close()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Yummy CMS management")
-    parser.add_argument("command", choices=("bootstrap-admin", "seed-content"))
+    parser.add_argument("command", choices=("bootstrap-admin", "seed-content", "prune-orphans"))
     command = parser.parse_args().command
-    return asyncio.run(bootstrap_admin() if command == "bootstrap-admin" else seed_content())
+    commands = {"bootstrap-admin": bootstrap_admin, "seed-content": seed_content, "prune-orphans": prune_orphans}
+    return asyncio.run(commands[command]())
 
 
 if __name__ == "__main__":

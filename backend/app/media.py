@@ -119,14 +119,15 @@ def _enforce_pixel_limit(size: tuple[int, int], max_pixels: int) -> None:
 async def cleanup_orphan_media(db: AsyncDatabase, settings: Settings, older_than: datetime) -> tuple[int, int]:
     """Remove unreferenced files older than the supplied verified cutoff."""
     referenced: set[str] = set()
-    async for project in db.entities_projects.find({}, {"cover_url": 1, "gallery_urls": 1}):
-        for url in [project.get("cover_url"), *(project.get("gallery_urls") or [])]:
-            if isinstance(url, str) and url.startswith(f"{settings.media_public_prefix}/"):
-                referenced.add(url.rsplit("/", 1)[-1])
-    site = await db.entities_site_content.find_one({"_id": "site"}, {"profile_image_url": 1})
-    profile_image_url = site.get("profile_image_url") if site else None
-    if isinstance(profile_image_url, str) and profile_image_url.startswith(f"{settings.media_public_prefix}/"):
-        referenced.add(profile_image_url.rsplit("/", 1)[-1])
+    menu = await db.entities_menu.find_one({"_id": "menu"}, {"categories": 1})
+    # Never prune uploads when the authoritative menu document is missing.
+    if not menu:
+        return 0, 0
+    for category in menu.get("categories", []):
+        for item in category.get("items", []):
+            for url in item.get("images", []):
+                if isinstance(url, str) and url.startswith(f"{settings.media_public_prefix}/"):
+                    referenced.add(url.rsplit("/", 1)[-1])
     deleted_files = 0
     deleted_metadata = 0
     async for media in db.entities_media.find({"created_at": {"$lt": older_than}}):
