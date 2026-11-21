@@ -13,6 +13,7 @@ import {
   uniqueId,
 } from "@/lib/admin-client";
 import { ImageUploader } from "./ImageUploader";
+import { cmsEnabled } from "@/lib/yummy-api";
 
 type Props = {
   repo: string;
@@ -22,6 +23,7 @@ type Props = {
 
 export function MenuEditor({ repo, branch, onLogout }: Props) {
   const [categories, setCategories] = useState<MenuCategory[] | null>(null);
+  const [revision, setRevision] = useState<number | null>(null);
   const [locale, setLocale] = useState<Locale>("en");
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -31,7 +33,8 @@ export function MenuEditor({ repo, branch, onLogout }: Props) {
   const load = useCallback(async () => {
     setError(null);
     try {
-      const data = await apiRequest<{ categories: MenuCategory[] }>("/api/admin/menu");
+      const data = await apiRequest<{ categories: MenuCategory[]; revision?: number }>("/api/admin/menu");
+      setRevision(data.revision ?? null);
       setCategories(data.categories);
       setDirty(false);
       setMessage(null);
@@ -144,14 +147,15 @@ export function MenuEditor({ repo, branch, onLogout }: Props) {
     setError(null);
     setMessage(null);
     try {
-      const result = await apiRequest<{ commit: string; categories: number; items: number }>("/api/admin/menu", {
+      const result = await apiRequest<{ commit?: string; categories: number; items: number; revision?: number }>("/api/admin/menu", {
         method: "PUT",
-        body: JSON.stringify({ categories }),
+        body: JSON.stringify(cmsEnabled ? { categories, revision } : { categories }),
       });
       setDirty(false);
-      setMessage(
-        `Yayınlandı: ${result.categories} kategori / ${result.items} kalem · commit ${result.commit.slice(0, 7)} · site ~40 sn içinde güncellenir.`,
-      );
+      setRevision(result.revision ?? null);
+      setMessage(cmsEnabled
+        ? `Kaydedildi: ${result.categories} kategori / ${result.items} kalem · revizyon ${result.revision}. Değişiklikler canlı.`
+        : `Yayınlandı: ${result.categories} kategori / ${result.items} kalem · commit ${result.commit?.slice(0, 7)} · site yeniden derlenecek.`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Yayınlama başarısız");
     } finally {
