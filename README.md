@@ -1,5 +1,7 @@
 # Yummy — Waffle & Gelato
 
+> **2026-11 CMS migration:** This branch adds an optional Eren-style FastAPI + MongoDB CMS. Production stays on the existing GitHub/Vercel publishing model until the new API is configured. See [docs/CMS-MIGRATION.md](docs/CMS-MIGRATION.md).
+
 Tek sayfalık restoran/tatlı dükkanı tanıtım + WhatsApp sipariş + masa rezervasyon sitesi.
 
 - **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · lucide-react

@@ -17,7 +17,7 @@ function sessionSecret(): string {
 
 /** Panelin çalışması için gereken üç değişken var mı? */
 export function adminConfigured(): boolean {
-  return Boolean(process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET && process.env.GITHUB_TOKEN);
+  return !process.env.NEXT_PUBLIC_YUMMY_API_URL && Boolean(process.env.ADMIN_PASSWORD && process.env.ADMIN_SESSION_SECRET && process.env.GITHUB_TOKEN);
 }
 
 /** Eksik değişkenlerin adlarını döner (kurulum ekranında gösterilir). */
@@ -51,6 +51,7 @@ export function createSessionToken(): string {
 }
 
 export function verifySessionToken(token: string | undefined | null): boolean {
+  if (process.env.NEXT_PUBLIC_YUMMY_API_URL) return false;
   if (!token) return false;
   const parts = token.split(".");
   if (parts.length !== 3) return false;

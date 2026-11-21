@@ -1,4 +1,6 @@
-import { whatsappNumber } from "@/data/restaurant";
+"use client";
+
+import { useRestaurant } from "@/components/RestaurantContext";
 
 type WhatsAppButtonProps = {
   message?: string;
@@ -7,6 +9,7 @@ type WhatsAppButtonProps = {
 };
 
 export function WhatsAppButton({ message, className, children }: WhatsAppButtonProps) {
+  const { whatsappNumber } = useRestaurant();
   const text = message ? `?text=${encodeURIComponent(message)}` : "";
   const href = `https://wa.me/${whatsappNumber}${text}`;
 

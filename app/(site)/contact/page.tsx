@@ -4,11 +4,13 @@ import { MapPin, Phone, Clock, Navigation, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/components/LanguageContext";
 import { pick } from "@/data/i18n";
 import { ui } from "@/data/ui";
-import { address, phone, workingHours, mapsUrl, mapsEmbed } from "@/data/restaurant";
+import { useRestaurant } from "@/components/RestaurantContext";
+import { ContactForm } from "@/components/ContactForm";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 export default function ContactPage() {
   const { locale } = useLanguage();
+  const { address, phone, workingHours, mapsUrl, mapsEmbed } = useRestaurant();
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-16 pt-32 sm:px-6 sm:pb-24 sm:pt-40">
@@ -86,6 +88,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      <ContactForm />
     </div>
   );
 }

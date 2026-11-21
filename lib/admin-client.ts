@@ -2,6 +2,7 @@
 // Sunucu doğrulaması lib/menu-validate.ts içinde — buradakiler yalnızca UX için.
 
 import type { Locale, LocalizedText } from "@/data/i18n";
+import { cmsEnabled, cmsRequest } from "@/lib/yummy-api";
 import type { MenuCategory, MenuItem } from "@/data/menu";
 
 export const EDIT_LOCALES: { code: Locale; label: string }[] = [
@@ -67,6 +68,17 @@ export function formatIdr(price: number): string {
 
 /** API çağrısı: hata gövdesindeki `error` alanını Error mesajına çevirir. */
 export async function apiRequest<T>(input: string, init?: RequestInit): Promise<T> {
+  if (cmsEnabled) {
+    if (input === "/api/admin/menu") return cmsRequest<T>("/admin/menu", init);
+    if (input === "/api/admin/upload") {
+      const form = init?.body instanceof FormData ? init.body : null;
+      const file = form?.get("file");
+      if (!(file instanceof File)) throw new Error("Görsel dosyası bulunamadı");
+      const body = new FormData();
+      body.append("upload", file);
+      return cmsRequest<T>("/admin/media", { method: "POST", body });
+    }
+  }
   const response = await fetch(input, {
     ...init,
     headers: init?.body instanceof FormData ? init?.headers : { "Content-Type": "application/json", ...(init?.headers ?? {}) },

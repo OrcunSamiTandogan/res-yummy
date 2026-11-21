@@ -1,5 +1,7 @@
 # Yummy — Waffle & Gelato (Handoff + UI Kılavuzu)
 
+> 22.11.2026: feat/eren-style-cms dalında Eren mimarisiyle isteğe bağlı FastAPI + MongoDB CMS eklendi. Eski Vercel/Git modeli yalnızca CMS API ortam değişkenleri boşken geçerli. Güncel mimari için docs/CMS-MIGRATION.md dosyasına bak.
+
 > Bu dosya yeni bir Claude Code oturumuna bu projeyi devretmek için yazıldı.
 
 ---

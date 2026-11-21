@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { apiRequest } from "@/lib/admin-client";
+import { cmsEnabled } from "@/lib/yummy-api";
 
 const MAX_IMAGES = 4;
 const MAX_EDGE = 1600;
@@ -120,7 +121,7 @@ export function ImageUploader({ images, slug, onChange }: Props) {
       {error ? <p className="text-xs text-rose-300">{error}</p> : null}
       {images.length > 0 ? (
         <p className="text-xs text-slate-500">
-          Yeni yüklenen görsel, Vercel rebuild tamamlanınca sitede görünür (~40 sn).
+          {cmsEnabled ? "Yeni görsel kaydedildikten sonra sitede görünür." : "Yeni yüklenen görsel, Vercel rebuild tamamlanınca sitede görünür."}
         </p>
       ) : null}
     </div>

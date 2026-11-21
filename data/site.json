@@ -1,0 +1,59 @@
+{
+  "restaurantName": {
+    "en": "Yummy",
+    "id": "Yummy",
+    "ru": "Yummy",
+    "tr": "Yummy"
+  },
+  "brandTagline": {
+    "en": "Waffle & Gelato",
+    "id": "Waffle & Gelato",
+    "ru": "Вафли и Джелато",
+    "tr": "Waffle & Gelato"
+  },
+  "slogan": {
+    "en": "Crispy waffles, silky gelato — a perfect blend in every bite.",
+    "id": "Waffle renyah, gelato lembut — paduan sempurna di setiap gigitan.",
+    "ru": "Хрустящие вафли и нежное джелато — идеальное сочетание в каждом кусочке.",
+    "tr": "Çıtır waffle'lar, ipeksi gelato — her lokmada kusursuz bir uyum."
+  },
+  "whatsappNumber": "905367841917",
+  "phone": "+90 536 784 19 17",
+  "address": {
+    "en": "Jl. Munduk Kedungu, Pererenan, Kuta Utara, Badung, Bali",
+    "id": "Jl. Munduk Kedungu, Pererenan, Kuta Utara, Badung, Bali",
+    "ru": "Джл. Мундук Кедунгу, Переренан, Кута Утара, Бадунг, Бали",
+    "tr": "Jl. Munduk Kedungu, Pererenan, Kuta Utara, Badung, Bali"
+  },
+  "mapsUrl": "https://maps.app.goo.gl/D2xfTfwx89yTRx4C6",
+  "mapsEmbed": "https://www.google.com/maps?q=-8.6541186,115.1244132&hl=en&z=17&output=embed",
+  "workingHours": [
+    {
+      "days": {
+        "en": "Monday – Friday",
+        "id": "Senin – Jumat",
+        "ru": "Понедельник – Пятница",
+        "tr": "Pazartesi – Cuma"
+      },
+      "hours": "11:00 – 23:00"
+    },
+    {
+      "days": {
+        "en": "Saturday",
+        "id": "Sabtu",
+        "ru": "Суббота",
+        "tr": "Cumartesi"
+      },
+      "hours": "10:00 – 24:00"
+    },
+    {
+      "days": {
+        "en": "Sunday",
+        "id": "Minggu",
+        "ru": "Воскресенье",
+        "tr": "Pazar"
+      },
+      "hours": "10:00 – 22:00"
+    }
+  ]
+}
